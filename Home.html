@@ -33,65 +33,128 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="home.html">Acasă</a>
+              <a class="nav-link" href="home.html" data-en="Home">Acasă</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="categorii.html">Categorii</a>
+              <a class="nav-link" href="categorii.html" data-en="Categories"
+                >Categorii</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="produse.html" aria-current="page"
+              <a
+                class="nav-link active"
+                href="produse.html"
+                aria-current="page"
+                data-en="Shop"
                 >Magazin</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#comenzi">Comenzi</a>
+              <a class="nav-link" href="#comenzi" data-en="Commissions"
+                >Comenzi</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="promotii.html">Promoții</a>
+              <a class="nav-link" href="promotii.html" data-en="Sale"
+                >Promoții</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="favorite.html">Favorite</a>
+              <a class="nav-link" href="favorite.html" data-en="Favorites"
+                >Favorite</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="cos.html">Coș</a>
+              <a class="nav-link" href="cos.html" data-en="Cart">Coș</a>
             </li>
           </ul>
+          <div class="lang" role="group" aria-label="Limbă / Language">
+            <button class="lang-btn" data-lang="ro" aria-pressed="true">
+              RO
+            </button>
+            <button class="lang-btn" data-lang="en" aria-pressed="false">
+              EN
+            </button>
+          </div>
         </div>
       </div>
     </nav>
 
     <header class="page-head container">
-      <h1>Magazin</h1>
-      <p class="page-intro">
+      <h1 data-en="Shop">Magazin</h1>
+      <p
+        class="page-intro"
+        data-en="Original drawings, prints and digital illustrations."
+      >
         Desene originale, printuri și ilustrații digitale.
       </p>
     </header>
 
     <main class="container pb-5">
+      <!--
+            ============================================================
+            YOUR DRAWINGS GO HERE
+            1. Create a folder called "images" next to this file.
+            2. Save a photo or scan of each drawing in it (JPG or PNG).
+            3. In each block below, change the src="images/..." path to
+               your file name, and update the title, price and text.
+            Tips:
+              - Crop the photo to just the drawing, no table or background.
+              - Keep each image under about 500 KB so the page loads fast.
+              - Any proportions work, the drawing is shown whole on its mat.
+              - To add another drawing, copy a whole block starting at
+                <div class="col-sm-6 col-lg-4" ...> to its closing </div>.
+              - data-type must be: original, print or digital.
+            ============================================================
+        -->
+
       <div class="filters" role="group" aria-label="Filtrează lucrările">
-        <button class="filter active" data-filter="all">Toate</button>
-        <button class="filter" data-filter="original">Desene originale</button>
-        <button class="filter" data-filter="print">Printuri</button>
-        <button class="filter" data-filter="digital">Digitale</button>
+        <button class="filter active" data-filter="all" data-en="All">
+          Toate
+        </button>
+        <button
+          class="filter"
+          data-filter="original"
+          data-en="Original drawings"
+        >
+          Desene originale
+        </button>
+        <button class="filter" data-filter="print" data-en="Prints">
+          Printuri
+        </button>
+        <button class="filter" data-filter="digital" data-en="Digital">
+          Digitale
+        </button>
       </div>
 
       <div class="row g-5" id="works">
         <!-- Copy a block for each drawing. data-type: original, print or digital. -->
         <div class="col-sm-6 col-lg-4" data-type="original">
           <a class="work" href="product.html">
+            <!-- DRAWING 1: put your image here. Replace images/desen-1.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
-                src="images/desen-1.jpg"
+                src="Images\Kimm Morde - Crimson gaze fanart_No shade-No glow with blood.jpg"
                 alt="Mână cu creion"
+                data-en-alt="Hand with pencil"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Mână cu creion</h2>
+              <h2 class="work-title" data-en="Hand with pencil">
+                Mână cu creion
+              </h2>
               <span class="work-price">380.00 RON</span>
             </div>
-            <span class="work-format">Desen original, grafit pe hârtie</span>
-            <p class="work-desc">
+            <span
+              class="work-format"
+              data-en="Original drawing, graphite on paper"
+              >Desen original, grafit pe hârtie</span
+            >
+            <p
+              class="work-desc"
+              data-en="Graphite on 200 gsm paper, 30 × 40 cm. One of a kind, unframed."
+            >
               Grafit pe hârtie de 200 g, 30 × 40 cm. Lucrare unică, fără ramă.
             </p>
           </a>
@@ -99,19 +162,28 @@
 
         <div class="col-sm-6 col-lg-4" data-type="print">
           <a class="work" href="product.html">
+            <!-- DRAWING 2: put your image here. Replace images/desen-2.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
                 src="images/desen-2.jpg"
                 alt="Pădure în ceață"
+                data-en-alt="Forest in the fog"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Pădure în ceață</h2>
+              <h2 class="work-title" data-en="Forest in the fog">
+                Pădure în ceață
+              </h2>
               <span class="work-price">110.00 RON</span>
             </div>
-            <span class="work-format">Print A3 după desen cu tuș</span>
-            <p class="work-desc">
+            <span class="work-format" data-en="A3 print of an ink drawing"
+              >Print A3 după desen cu tuș</span
+            >
+            <p
+              class="work-desc"
+              data-en="Giclée print on matte paper, made from an original ink drawing. Signed."
+            >
               Print giclée pe hârtie mată, făcut după un desen original cu tuș.
               Semnat.
             </p>
@@ -120,21 +192,30 @@
 
         <div class="col-sm-6 col-lg-4" data-type="digital">
           <a class="work" href="product.html">
+            <!-- DRAWING 3: put your image here. Replace images/desen-3.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
                 src="images/desen-3.jpg"
                 alt="Fată cu pisică"
+                data-en-alt="Girl with a cat"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Fată cu pisică</h2>
+              <h2 class="work-title" data-en="Girl with a cat">
+                Fată cu pisică
+              </h2>
               <span class="work-price">30.00 RON</span>
             </div>
-            <span class="work-format"
+            <span
+              class="work-format"
+              data-en="Digital illustration, instant download"
               >Ilustrație digitală, descărcare instant</span
             >
-            <p class="work-desc">
+            <p
+              class="work-desc"
+              data-en="High-resolution PNG file, for screen or A3 print."
+            >
               Fișier PNG în rezoluție mare, pentru ecran sau tipar la A3.
             </p>
           </a>
@@ -142,19 +223,30 @@
 
         <div class="col-sm-6 col-lg-4" data-type="original">
           <a class="work" href="product.html">
+            <!-- DRAWING 4: put your image here. Replace images/desen-4.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
                 src="images/desen-4.jpg"
                 alt="Studiu în cărbune"
+                data-en-alt="Charcoal study"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Studiu în cărbune</h2>
+              <h2 class="work-title" data-en="Charcoal study">
+                Studiu în cărbune
+              </h2>
               <span class="work-price">420.00 RON</span>
             </div>
-            <span class="work-format">Desen original, cărbune pe hârtie</span>
-            <p class="work-desc">
+            <span
+              class="work-format"
+              data-en="Original drawing, charcoal on paper"
+              >Desen original, cărbune pe hârtie</span
+            >
+            <p
+              class="work-desc"
+              data-en="Charcoal and pastel on textured paper, 50 × 70 cm. One of a kind."
+            >
               Cărbune și pastel pe hârtie texturată, 50 × 70 cm. Lucrare unică.
             </p>
           </a>
@@ -162,19 +254,28 @@
 
         <div class="col-sm-6 col-lg-4" data-type="print">
           <a class="work" href="product.html">
+            <!-- DRAWING 5: put your image here. Replace images/desen-5.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
                 src="images/desen-5.jpg"
                 alt="Portret cu creioane colorate"
+                data-en-alt="Coloured pencil portrait"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Portret cu creioane colorate</h2>
+              <h2 class="work-title" data-en="Coloured pencil portrait">
+                Portret cu creioane colorate
+              </h2>
               <span class="work-price">85.00 RON</span>
             </div>
-            <span class="work-format">Print A4 după desen</span>
-            <p class="work-desc">
+            <span class="work-format" data-en="A4 print of a drawing"
+              >Print A4 după desen</span
+            >
+            <p
+              class="work-desc"
+              data-en="Print on cotton paper, made from a coloured pencil drawing."
+            >
               Print pe hârtie de bumbac, făcut după un desen în creioane
               colorate.
             </p>
@@ -183,19 +284,28 @@
 
         <div class="col-sm-6 col-lg-4" data-type="digital">
           <a class="work" href="product.html">
+            <!-- DRAWING 6: put your image here. Replace images/desen-6.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
                 src="images/desen-6.jpg"
                 alt="Pagini de schițieră"
+                data-en-alt="Sketchbook pages"
                 loading="lazy"
               />
             </figure>
             <div class="work-label">
-              <h2 class="work-title">Pagini de schițieră</h2>
+              <h2 class="work-title" data-en="Sketchbook pages">
+                Pagini de schițieră
+              </h2>
               <span class="work-price">40.00 RON</span>
             </div>
-            <span class="work-format">Digital, set de schițe PDF</span>
-            <p class="work-desc">
+            <span class="work-format" data-en="Digital, PDF sketch set"
+              >Digital, set de schițe PDF</span
+            >
+            <p
+              class="work-desc"
+              data-en="Twenty pages of sketches from my sketchbook, as a PDF, for inspiration."
+            >
               Douăzeci de pagini de schițe din carnetul meu, în PDF, pentru
               inspirație.
             </p>
@@ -204,65 +314,88 @@
       </div>
 
       <section class="commissions" id="comenzi" aria-labelledby="comenzi-titlu">
-        <h2 id="comenzi-titlu" class="commissions-title">
+        <h2
+          id="comenzi-titlu"
+          class="commissions-title"
+          data-en="Custom commissions"
+        >
           Comenzi personalizate
         </h2>
-        <p class="commissions-intro">
+        <p
+          class="commissions-intro"
+          data-en="Tell me what you have in mind and I'll reply with a quote within two days."
+        >
           Spune-mi ce ai în minte și îți răspund cu o ofertă în două zile.
         </p>
 
         <div class="row g-5">
           <div class="col-md-6">
             <article class="commission">
-              <h3>Desen la comandă</h3>
-              <p>
+              <h3 data-en="Drawing commission">Desen la comandă</h3>
+              <p
+                data-en="An original drawing made from your idea: a portrait, a pet, a gift or a character."
+              >
                 Un desen original făcut după ideea ta: portret, animal de
                 companie, cadou sau personaj.
               </p>
               <dl class="commission-details">
-                <dt>Tehnici</dt>
-                <dd>Grafit, cărbune, tuș sau creioane colorate</dd>
-                <dt>Formate</dt>
-                <dd>A4, A3 sau 50 × 70 cm</dd>
-                <dt>Preț</dt>
-                <dd>de la 250 RON</dd>
-                <dt>Durată</dt>
-                <dd>1–2 săptămâni</dd>
-                <dt>Primești</dt>
-                <dd>
+                <dt data-en="Media">Tehnici</dt>
+                <dd data-en="Graphite, charcoal, ink or coloured pencil">
+                  Grafit, cărbune, tuș sau creioane colorate
+                </dd>
+                <dt data-en="Sizes">Formate</dt>
+                <dd data-en="A4, A3 or 50 × 70 cm">A4, A3 sau 50 × 70 cm</dd>
+                <dt data-en="Price">Preț</dt>
+                <dd data-en="from 250 RON">de la 250 RON</dd>
+                <dt data-en="Turnaround">Durată</dt>
+                <dd data-en="1–2 weeks">1–2 săptămâni</dd>
+                <dt data-en="You get">Primești</dt>
+                <dd
+                  data-en="The original drawing, shipped by courier, and a high-resolution photo"
+                >
                   Desenul original, livrat prin curier, și o poză în rezoluție
                   mare
                 </dd>
               </dl>
               <a
                 class="btn-commission"
-                href="mailto:email@exemplu.ro?subject=Comand%C4%83%20desen&body=Descrie%20ideea%20ta%2C%20formatul%20dorit%20%C8%99i%20termenul."
+                data-mail="draw"
+                href="mailto:email@exemplu.ro"
+                data-en="Request a drawing quote"
                 >Cere o ofertă pentru desen</a
               >
             </article>
           </div>
           <div class="col-md-6">
             <article class="commission">
-              <h3>Animație la comandă</h3>
-              <p>
+              <h3 data-en="Animation commission">Animație la comandă</h3>
+              <p
+                data-en="A short animation drawn frame by frame: a loop for social media, an animated logo or a small video."
+              >
                 O animație scurtă desenată cadru cu cadru: buclă pentru social
                 media, logo animat sau mic videoclip.
               </p>
               <dl class="commission-details">
-                <dt>Stil</dt>
-                <dd>Desenat de mână, alb-negru sau color</dd>
-                <dt>Lungime</dt>
-                <dd>3–30 de secunde</dd>
-                <dt>Preț</dt>
-                <dd>de la 600 RON</dd>
-                <dt>Durată</dt>
-                <dd>2–4 săptămâni</dd>
-                <dt>Primești</dt>
-                <dd>Fișier MP4 sau GIF, plus două runde de modificări</dd>
+                <dt data-en="Style">Stil</dt>
+                <dd data-en="Hand-drawn, black and white or colour">
+                  Desenat de mână, alb-negru sau color
+                </dd>
+                <dt data-en="Length">Lungime</dt>
+                <dd data-en="3–30 seconds">3–30 de secunde</dd>
+                <dt data-en="Price">Preț</dt>
+                <dd data-en="from 600 RON">de la 600 RON</dd>
+                <dt data-en="Turnaround">Durată</dt>
+                <dd data-en="2–4 weeks">2–4 săptămâni</dd>
+                <dt data-en="You get">Primești</dt>
+                <dd data-en="MP4 or GIF file, plus two rounds of changes">
+                  Fișier MP4 sau GIF, plus două runde de modificări
+                </dd>
               </dl>
               <a
                 class="btn-commission"
-                href="mailto:email@exemplu.ro?subject=Comand%C4%83%20anima%C8%9Bie&body=Descrie%20ideea%20ta%2C%20lungimea%20dorit%C4%83%2C%20unde%20va%20fi%20folosit%C4%83%20%C8%99i%20termenul."
+                data-mail="anim"
+                href="mailto:email@exemplu.ro"
+                data-en="Request an animation quote"
                 >Cere o ofertă pentru animație</a
               >
             </article>
@@ -272,7 +405,10 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container">
+      <div
+        class="container"
+        data-en="Atelier &middot; Original drawings, prints and digital illustrations"
+      >
         Atelier &middot; Desene originale, printuri și ilustrații digitale
       </div>
     </footer>
@@ -292,6 +428,77 @@
           });
         });
       });
+    </script>
+
+    <script>
+      const MAIL = {
+        draw: {
+          ro: {
+            s: "Comandă desen",
+            b: "Descrie ideea ta, formatul dorit și termenul.",
+          },
+          en: {
+            s: "Drawing commission",
+            b: "Describe your idea, the size you want and your deadline.",
+          },
+        },
+        anim: {
+          ro: {
+            s: "Comandă animație",
+            b: "Descrie ideea ta, lungimea dorită, unde va fi folosită și termenul.",
+          },
+          en: {
+            s: "Animation commission",
+            b: "Describe your idea, the length you want, where it will be used and your deadline.",
+          },
+        },
+      };
+      const TITLES = { ro: "Magazin | Atelier", en: "Shop | Atelier" };
+
+      // Remember the original Romanian text so we can switch back.
+      document.querySelectorAll("[data-en]").forEach((el) => {
+        el.dataset.ro = el.innerHTML;
+      });
+      document.querySelectorAll("[data-en-alt]").forEach((el) => {
+        el.dataset.roAlt = el.alt;
+      });
+
+      function setLang(lang) {
+        document.documentElement.lang = lang;
+        document.title = TITLES[lang];
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          el.innerHTML = lang === "en" ? el.dataset.en : el.dataset.ro;
+        });
+        document.querySelectorAll("[data-en-alt]").forEach((el) => {
+          el.alt = lang === "en" ? el.dataset.enAlt : el.dataset.roAlt;
+        });
+        document.querySelectorAll("[data-mail]").forEach((a) => {
+          const m = MAIL[a.dataset.mail][lang];
+          a.href =
+            "mailto:email@exemplu.ro?subject=" +
+            encodeURIComponent(m.s) +
+            "&body=" +
+            encodeURIComponent(m.b);
+        });
+        document.querySelectorAll(".lang-btn").forEach((b) => {
+          const on = b.dataset.lang === lang;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-pressed", on);
+        });
+        try {
+          localStorage.setItem("lang", lang);
+        } catch (e) {}
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((b) => {
+        b.addEventListener("click", () => setLang(b.dataset.lang));
+      });
+
+      let saved = "ro";
+      try {
+        saved = localStorage.getItem("lang") || "ro";
+      } catch (e) {}
+      setLang(saved === "en" ? "en" : "ro");
     </script>
   </body>
 </html>
