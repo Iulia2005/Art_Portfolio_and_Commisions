@@ -3,6 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Set the theme before the page paints, so it doesn't flash.
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem("theme");
+        } catch (e) {}
+        if (!t)
+          t = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
     <title>Magazin | Atelier</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -22,7 +37,11 @@
                      A PNG with a transparent background or an SVG works best.
                      Change the height in Home.css (.brand-logo) if it looks too big or small.
                      Put your name in the alt text so it still reads if the image doesn't load. -->
-          <img class="brand-logo" src="images/logo.png" alt="Atelier" />
+          <img
+            class="brand-logo"
+            src="Images\Minimal Drawing Tablet Emblem.png"
+            alt="Atelier"
+          />
         </a>
         <button
           class="navbar-toggler"
@@ -74,12 +93,17 @@
               <a class="nav-link" href="cos.html" data-en="Cart">Coș</a>
             </li>
           </ul>
-          <div class="lang" role="group" aria-label="Limbă / Language">
-            <button class="lang-btn" data-lang="ro" aria-pressed="true">
-              RO
-            </button>
-            <button class="lang-btn" data-lang="en" aria-pressed="false">
-              EN
+          <div class="nav-tools">
+            <div class="lang" role="group" aria-label="Limbă / Language">
+              <button class="lang-btn" data-lang="ro" aria-pressed="true">
+                RO
+              </button>
+              <button class="lang-btn" data-lang="en" aria-pressed="false">
+                EN
+              </button>
+            </div>
+            <button class="theme-btn" id="themeBtn" type="button">
+              &#9790;
             </button>
           </div>
         </div>
@@ -142,7 +166,7 @@
             <!-- DRAWING 1: put your image here. Replace images/desen-1.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
-                src="Images\Kimm Morde - Crimson gaze fanart_No shade-No glow.jpg"
+                src="Images\Kimm Morde - Crimson gaze fanart_No shade-No glow with blood.jpg"
                 alt="Mână cu creion"
                 data-en-alt="Hand with pencil"
                 loading="lazy"
@@ -203,7 +227,7 @@
             <!-- DRAWING 3: put your image here. Replace images/desen-3.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
-                src="C:\Users\Iulia\OneDrive\Documents\GitHub\Art_Portfolio_and_Commisions\Images\WhatsApp Image 2026-10-12 at 12.18.50 PM.jpeg"
+                src="Images\WhatsApp Image 2026-10-12 at 12.18.50 PM.jpeg"
                 alt="Fată cu pisică"
                 data-en-alt="Girl with a cat"
                 loading="lazy"
@@ -265,7 +289,7 @@
             <!-- DRAWING 5: put your image here. Replace images/desen-5.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
-                src="Images\WhatsApp Image 2026-10-12 at 12.18.52 PM.jpeg"
+                src="Images\WhatsApp Image 2026-10-12 at 12.18.53.PM.jpeg"
                 alt="Portret cu creioane colorate"
                 data-en-alt="Coloured pencil portrait"
                 loading="lazy"
@@ -295,7 +319,7 @@
             <!-- DRAWING 6: put your image here. Replace images/desen-6.jpg below with your file, and update the alt text (describe the drawing) -->
             <figure class="work-frame">
               <img
-                src="Images\WhatsApp Image 2026-10-12 at 12.18.53.PM.jpeg"
+                src="Images\Kimm Morde - Crimson gaze fanart_No shade-No glow.jpg"
                 alt="Pagini de schițieră"
                 data-en-alt="Sketchbook pages"
                 loading="lazy"
@@ -496,10 +520,43 @@
         try {
           localStorage.setItem("lang", lang);
         } catch (e) {}
+        updateThemeBtn();
       }
 
       document.querySelectorAll(".lang-btn").forEach((b) => {
         b.addEventListener("click", () => setLang(b.dataset.lang));
+      });
+
+      // Light / dark mode
+      const THEME_LABELS = {
+        ro: {
+          toDark: "Treci la modul întunecat",
+          toLight: "Treci la modul luminos",
+        },
+        en: { toDark: "Switch to dark mode", toLight: "Switch to light mode" },
+      };
+      function updateThemeBtn() {
+        const btn = document.getElementById("themeBtn");
+        const dark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        const lang = document.documentElement.lang === "en" ? "en" : "ro";
+        btn.innerHTML = dark ? "&#9728;" : "&#9790;";
+        const label = dark
+          ? THEME_LABELS[lang].toLight
+          : THEME_LABELS[lang].toDark;
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+      }
+      document.getElementById("themeBtn").addEventListener("click", () => {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light"
+            : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {}
+        updateThemeBtn();
       });
 
       let saved = "ro";
