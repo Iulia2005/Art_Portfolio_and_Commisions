@@ -314,3 +314,115 @@ html { scroll-behavior: smooth; }
     height: 44px;
     width: auto;
 }
+
+/* ==========================================================
+   COLOR LAYER
+   Change the palette here and the whole page follows.
+   ========================================================== */
+:root {
+    --tomato: #d63a1f;
+    --sun: #f6c445;
+    --mint-deep: #1f7a5a;
+    --butter: #fce8a6;
+    --blush: #fad1d8;
+    --mint: #cdebdd;
+}
+
+/* Nav: yellow band with a dark rule */
+.site-nav {
+    background: var(--sun);
+    border-bottom: 3px solid var(--ink);
+    padding: 12px 0;
+}
+.site-nav .nav-link { color: var(--ink); }
+.site-nav .nav-link.active { border-bottom-color: var(--ink); }
+.lang { border-color: var(--ink); }
+.lang-btn { color: var(--ink); }
+.lang-btn.active { background: var(--ink); color: var(--sun); }
+
+/* Bigger logo */
+.brand-logo { height: 64px; }
+@media (max-width: 575px) { .brand-logo { height: 52px; } }
+
+/* Page header: blue block with two overlapping circles */
+.page-head {
+    position: relative;
+    overflow: hidden;
+    max-width: none;
+    margin: 40px 0 64px;
+    padding: 64px 48px;
+    background: var(--pigment);
+    color: var(--paper);
+}
+.page-head h1, .page-head .page-intro { position: relative; z-index: 1; }
+.page-head h1 { color: #fff; }
+.page-head .page-intro { color: #e3e6ff; }
+.page-head::before, .page-head::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+.page-head::before {
+    width: 260px; height: 260px;
+    right: 120px; top: -60px;
+    background: var(--tomato);
+}
+.page-head::after {
+    width: 200px; height: 200px;
+    right: -40px; bottom: -70px;
+    background: var(--sun);
+}
+@media (max-width: 575px) { .page-head { padding: 40px 24px; } }
+
+/* Filters */
+.filter:hover { border-color: var(--pigment); color: var(--pigment); }
+.filter.active { background: var(--pigment); border-color: var(--pigment); color: #fff; }
+
+/* Each kind of work gets its own mat color and tag */
+[data-type="original"] .work-frame { background: var(--butter); }
+[data-type="print"] .work-frame { background: var(--blush); }
+[data-type="digital"] .work-frame { background: var(--mint); }
+.work:hover .work-frame, .work:focus-visible .work-frame { border-color: var(--ink); }
+
+.work-format {
+    border: 0;
+    border-radius: 2px;
+    padding: 3px 10px;
+    color: #fff;
+}
+[data-type="original"] .work-format { background: var(--tomato); }
+[data-type="print"] .work-format { background: var(--pigment); }
+[data-type="digital"] .work-format { background: var(--mint-deep); }
+
+/* Commissions: pink panel, white cards with colored tops */
+.commissions {
+    margin-top: 96px;
+    padding: 56px 48px;
+    border-top: 0;
+    background: var(--blush);
+}
+.commissions-intro { color: var(--ink); }
+.commission { border: 0; border-top: 6px solid var(--tomato); }
+.col-md-6:nth-child(2) .commission { border-top-color: var(--pigment); }
+.btn-commission[data-mail="draw"] { background: var(--tomato); }
+.btn-commission[data-mail="draw"]:hover { background: #b02d16; }
+@media (max-width: 575px) { .commissions { padding: 40px 20px; } }
+
+/* Footer: dark with a color stripe */
+.site-footer {
+    position: relative;
+    margin-top: 48px;
+    padding: 36px 0 28px;
+    border-top: 0;
+    background: var(--ink);
+    color: #c9cbd3;
+}
+.site-footer::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 6px;
+    background: linear-gradient(90deg,
+        var(--tomato) 0 25%, var(--sun) 25% 50%,
+        var(--mint-deep) 50% 75%, var(--pigment) 75% 100%);
+}
