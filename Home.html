@@ -13,7 +13,96 @@
 <body>
 
     <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container"><!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazin | Atelier</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Home.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg site-nav">
         <div class="container">
+            <a class="navbar-brand" href="home.php">Atelier</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Meniu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="home.php">Acasă</a></li>
+                    <li class="nav-item"><a class="nav-link" href="categorii.php">Categorii</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="categorii.php" aria-current="page">Magazin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="promotii.php">Promoții</a></li>
+                    <li class="nav-item"><a class="nav-link" href="favorite.php">Favorite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cos.php">Coș</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-head container">
+        <h1>Magazin</h1>
+        <p class="page-intro">Printuri, lucrări originale și fișiere digitale, direct din atelier.</p>
+    </header>
+
+    <main class="container pb-5">
+        <div class="row g-5">
+
+        <?php
+        include('db.php');
+
+        $cod_categorie = isset($_GET['cod_categorie']) ? $_GET['cod_categorie'] : null;
+
+        if ($cod_categorie) {
+            $sql_list_prod = "SELECT * from products where category_id = ?";
+            $stmt_list_prod = $conn->prepare($sql_list_prod);
+            $stmt_list_prod->execute([$cod_categorie]);
+
+            while ($row_list_prod = $stmt_list_prod->fetch(PDO::FETCH_ASSOC)) {
+                $cod_produs_list_prod = urlencode($row_list_prod['product_code']);
+                $nume_produs_list_prod = htmlspecialchars($row_list_prod['product_name']);
+                $pret_vanzare_list_prod = number_format($row_list_prod['sale_price'], 2);
+                $descriere_scurta_list_prod = htmlspecialchars($row_list_prod['short_description']);
+                $imagine = htmlspecialchars($row_list_prod['main_image']);
+
+                // Optional: add a "product_type" column (e.g. Print, Original, Digital) to show a format label.
+                $tip = isset($row_list_prod['product_type']) ? htmlspecialchars($row_list_prod['product_type']) : '';
+                $eticheta_tip = $tip !== '' ? "<span class='work-format'>$tip</span>" : '';
+
+                echo "
+                <div class='col-sm-6 col-lg-4'>
+                    <a class='work' href='product.php?product_code=$cod_produs_list_prod'>
+                        <figure class='work-frame'>
+                            <img src='$imagine' alt='$nume_produs_list_prod' loading='lazy'>
+                        </figure>
+                        <div class='work-label'>
+                            <h2 class='work-title'>$nume_produs_list_prod</h2>
+                            <span class='work-price'>$pret_vanzare_list_prod RON</span>
+                        </div>
+                        $eticheta_tip
+                        <p class='work-desc'>$descriere_scurta_list_prod</p>
+                    </a>
+                </div>
+                ";
+            }
+        } else {
+            echo "<div class='col-12'><p class='empty-note'>Alege o categorie din <a href='categorii.php'>Categorii</a> ca să vezi lucrările.</p></div>";
+        }
+        ?>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">Atelier &middot; Printuri, originale și artă digitală</div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
             <a class="navbar-brand" href="home.php">
                 ALTE PRODUSE
             </a>
