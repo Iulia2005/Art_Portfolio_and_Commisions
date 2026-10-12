@@ -1,187 +1,297 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alte Produse</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="Home.css">
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container"><!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Magazin | Atelier</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Home.css">
-</head>
-<body>
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Home.css" />
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg site-nav">
-        <div class="container">
-            <a class="navbar-brand" href="home.php">Atelier</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Meniu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="home.php">Acasă</a></li>
-                    <li class="nav-item"><a class="nav-link" href="categorii.php">Categorii</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="categorii.php" aria-current="page">Magazin</a></li>
-                    <li class="nav-item"><a class="nav-link" href="promotii.php">Promoții</a></li>
-                    <li class="nav-item"><a class="nav-link" href="favorite.php">Favorite</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cos.php">Coș</a></li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="home.html">Atelier</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-label="Meniu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="home.html">Acasă</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="categorii.html">Categorii</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="produse.html" aria-current="page"
+                >Magazin</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#comenzi">Comenzi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotii.html">Promoții</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="favorite.html">Favorite</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cos.html">Coș</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <header class="page-head container">
-        <h1>Magazin</h1>
-        <p class="page-intro">Printuri, lucrări originale și fișiere digitale, direct din atelier.</p>
+      <h1>Magazin</h1>
+      <p class="page-intro">
+        Desene originale, printuri și ilustrații digitale.
+      </p>
     </header>
 
     <main class="container pb-5">
-        <div class="row g-5">
+      <div class="filters" role="group" aria-label="Filtrează lucrările">
+        <button class="filter active" data-filter="all">Toate</button>
+        <button class="filter" data-filter="original">Desene originale</button>
+        <button class="filter" data-filter="print">Printuri</button>
+        <button class="filter" data-filter="digital">Digitale</button>
+      </div>
 
-        <?php
-        include('db.php');
-
-        $cod_categorie = isset($_GET['cod_categorie']) ? $_GET['cod_categorie'] : null;
-
-        if ($cod_categorie) {
-            $sql_list_prod = "SELECT * from products where category_id = ?";
-            $stmt_list_prod = $conn->prepare($sql_list_prod);
-            $stmt_list_prod->execute([$cod_categorie]);
-
-            while ($row_list_prod = $stmt_list_prod->fetch(PDO::FETCH_ASSOC)) {
-                $cod_produs_list_prod = urlencode($row_list_prod['product_code']);
-                $nume_produs_list_prod = htmlspecialchars($row_list_prod['product_name']);
-                $pret_vanzare_list_prod = number_format($row_list_prod['sale_price'], 2);
-                $descriere_scurta_list_prod = htmlspecialchars($row_list_prod['short_description']);
-                $imagine = htmlspecialchars($row_list_prod['main_image']);
-
-                // Optional: add a "product_type" column (e.g. Print, Original, Digital) to show a format label.
-                $tip = isset($row_list_prod['product_type']) ? htmlspecialchars($row_list_prod['product_type']) : '';
-                $eticheta_tip = $tip !== '' ? "<span class='work-format'>$tip</span>" : '';
-
-                echo "
-                <div class='col-sm-6 col-lg-4'>
-                    <a class='work' href='product.php?product_code=$cod_produs_list_prod'>
-                        <figure class='work-frame'>
-                            <img src='$imagine' alt='$nume_produs_list_prod' loading='lazy'>
-                        </figure>
-                        <div class='work-label'>
-                            <h2 class='work-title'>$nume_produs_list_prod</h2>
-                            <span class='work-price'>$pret_vanzare_list_prod RON</span>
-                        </div>
-                        $eticheta_tip
-                        <p class='work-desc'>$descriere_scurta_list_prod</p>
-                    </a>
-                </div>
-                ";
-            }
-        } else {
-            echo "<div class='col-12'><p class='empty-note'>Alege o categorie din <a href='categorii.php'>Categorii</a> ca să vezi lucrările.</p></div>";
-        }
-        ?>
+      <div class="row g-5" id="works">
+        <!-- Copy a block for each drawing. data-type: original, print or digital. -->
+        <div class="col-sm-6 col-lg-4" data-type="original">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-1.jpg"
+                alt="Mână cu creion"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Mână cu creion</h2>
+              <span class="work-price">380.00 RON</span>
+            </div>
+            <span class="work-format">Desen original, grafit pe hârtie</span>
+            <p class="work-desc">
+              Grafit pe hârtie de 200 g, 30 × 40 cm. Lucrare unică, fără ramă.
+            </p>
+          </a>
         </div>
+
+        <div class="col-sm-6 col-lg-4" data-type="print">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-2.jpg"
+                alt="Pădure în ceață"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Pădure în ceață</h2>
+              <span class="work-price">110.00 RON</span>
+            </div>
+            <span class="work-format">Print A3 după desen cu tuș</span>
+            <p class="work-desc">
+              Print giclée pe hârtie mată, făcut după un desen original cu tuș.
+              Semnat.
+            </p>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-lg-4" data-type="digital">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-3.jpg"
+                alt="Fată cu pisică"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Fată cu pisică</h2>
+              <span class="work-price">30.00 RON</span>
+            </div>
+            <span class="work-format"
+              >Ilustrație digitală, descărcare instant</span
+            >
+            <p class="work-desc">
+              Fișier PNG în rezoluție mare, pentru ecran sau tipar la A3.
+            </p>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-lg-4" data-type="original">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-4.jpg"
+                alt="Studiu în cărbune"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Studiu în cărbune</h2>
+              <span class="work-price">420.00 RON</span>
+            </div>
+            <span class="work-format">Desen original, cărbune pe hârtie</span>
+            <p class="work-desc">
+              Cărbune și pastel pe hârtie texturată, 50 × 70 cm. Lucrare unică.
+            </p>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-lg-4" data-type="print">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-5.jpg"
+                alt="Portret cu creioane colorate"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Portret cu creioane colorate</h2>
+              <span class="work-price">85.00 RON</span>
+            </div>
+            <span class="work-format">Print A4 după desen</span>
+            <p class="work-desc">
+              Print pe hârtie de bumbac, făcut după un desen în creioane
+              colorate.
+            </p>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-lg-4" data-type="digital">
+          <a class="work" href="product.html">
+            <figure class="work-frame">
+              <img
+                src="images/desen-6.jpg"
+                alt="Pagini de schițieră"
+                loading="lazy"
+              />
+            </figure>
+            <div class="work-label">
+              <h2 class="work-title">Pagini de schițieră</h2>
+              <span class="work-price">40.00 RON</span>
+            </div>
+            <span class="work-format">Digital, set de schițe PDF</span>
+            <p class="work-desc">
+              Douăzeci de pagini de schițe din carnetul meu, în PDF, pentru
+              inspirație.
+            </p>
+          </a>
+        </div>
+      </div>
+
+      <section class="commissions" id="comenzi" aria-labelledby="comenzi-titlu">
+        <h2 id="comenzi-titlu" class="commissions-title">
+          Comenzi personalizate
+        </h2>
+        <p class="commissions-intro">
+          Spune-mi ce ai în minte și îți răspund cu o ofertă în două zile.
+        </p>
+
+        <div class="row g-5">
+          <div class="col-md-6">
+            <article class="commission">
+              <h3>Desen la comandă</h3>
+              <p>
+                Un desen original făcut după ideea ta: portret, animal de
+                companie, cadou sau personaj.
+              </p>
+              <dl class="commission-details">
+                <dt>Tehnici</dt>
+                <dd>Grafit, cărbune, tuș sau creioane colorate</dd>
+                <dt>Formate</dt>
+                <dd>A4, A3 sau 50 × 70 cm</dd>
+                <dt>Preț</dt>
+                <dd>de la 250 RON</dd>
+                <dt>Durată</dt>
+                <dd>1–2 săptămâni</dd>
+                <dt>Primești</dt>
+                <dd>
+                  Desenul original, livrat prin curier, și o poză în rezoluție
+                  mare
+                </dd>
+              </dl>
+              <a
+                class="btn-commission"
+                href="mailto:email@exemplu.ro?subject=Comand%C4%83%20desen&body=Descrie%20ideea%20ta%2C%20formatul%20dorit%20%C8%99i%20termenul."
+                >Cere o ofertă pentru desen</a
+              >
+            </article>
+          </div>
+          <div class="col-md-6">
+            <article class="commission">
+              <h3>Animație la comandă</h3>
+              <p>
+                O animație scurtă desenată cadru cu cadru: buclă pentru social
+                media, logo animat sau mic videoclip.
+              </p>
+              <dl class="commission-details">
+                <dt>Stil</dt>
+                <dd>Desenat de mână, alb-negru sau color</dd>
+                <dt>Lungime</dt>
+                <dd>3–30 de secunde</dd>
+                <dt>Preț</dt>
+                <dd>de la 600 RON</dd>
+                <dt>Durată</dt>
+                <dd>2–4 săptămâni</dd>
+                <dt>Primești</dt>
+                <dd>Fișier MP4 sau GIF, plus două runde de modificări</dd>
+              </dl>
+              <a
+                class="btn-commission"
+                href="mailto:email@exemplu.ro?subject=Comand%C4%83%20anima%C8%9Bie&body=Descrie%20ideea%20ta%2C%20lungimea%20dorit%C4%83%2C%20unde%20va%20fi%20folosit%C4%83%20%C8%99i%20termenul."
+                >Cere o ofertă pentru animație</a
+              >
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
-        <div class="container">Atelier &middot; Printuri, originale și artă digitală</div>
+      <div class="container">
+        Atelier &middot; Desene originale, printuri și ilustrații digitale
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-            <a class="navbar-brand" href="home.php">
-                ALTE PRODUSE
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.php"><i class="fas fa-home"></i> ACASĂ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="categorii.php"><i class="fas fa-th-list"></i> CATEGORII</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="categorii.php"><i class="fas fa-box-open"></i> PRODUSE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="promotii.php"><i class="fas fa-tags"></i> PROMOȚII</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorite.php"><i class="fas fa-heart"></i> FAVORITE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cos.php"><i class="fas fa-shopping-cart"></i> COȘ</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <script>
+      const buttons = document.querySelectorAll(".filter");
+      const works = document.querySelectorAll("#works > [data-type]");
 
-    <section class="main-content container"> 
-        <h1 class="section-title text-center">Alte produse</h1>
-        <div class="row g-4 justify-content-center">
-
-        <?php
-        include('db.php');
-
-        $cod_categorie = isset($_GET['cod_categorie']) ? $_GET['cod_categorie'] : null;
-
-        if ($cod_categorie) {
-            $sql_list_prod = "SELECT * from products where category_id = ?";
-            $stmt_list_prod = $conn->prepare($sql_list_prod);  
-            $stmt_list_prod->execute([$cod_categorie]); 
-
-            while ($row_list_prod = $stmt_list_prod->fetch(PDO::FETCH_ASSOC)){  
-                $cod_produs_list_prod = $row_list_prod['product_code'];
-                $nume_produs_list_prod = $row_list_prod['product_name'];
-                $pret_vanzare_list_prod = number_format($row_list_prod['sale_price'], 2); 
-                $descriere_scurta_list_prod = $row_list_prod['short_description'];
-                $imagine = $row_list_prod['main_image'];
-
-                echo "
-                  <div class='col-md-6 col-lg-4 col-xl-3 d-flex align-items-stretch'>
-                      <div class='card product-card h-100'>
-                          <img src='$imagine' class='card-img-top product-card-img-top' alt='$nume_produs_list_prod' />
-                          <div class='card-body product-card-body d-flex flex-column'>
-                              <h5 class='card-title product-card-title'>$nume_produs_list_prod</h5>
-                              <span class='product-card-price'>$pret_vanzare_list_prod RON</span>
-                              <p class='card-text product-card-text flex-grow-1'>
-                                  $descriere_scurta_list_prod
-                              </p>
-                              <a href='product.php?product_code=$cod_produs_list_prod'
-                                 class='btn btn-primary btn-product-details mt-auto'
-                                
-                                 <i class='fas fa-info-circle me-2'></i> Detalii
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-                ";
-            }
-        } else {
-            echo "<div class='col-12 text-center'><p class='alert alert-warning'>Nicio categorie selectată.</p></div>";
-        }
-        ?>
-        </div>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const f = btn.dataset.filter;
+          works.forEach((w) => {
+            w.hidden = !(f === "all" || w.dataset.type === f);
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
