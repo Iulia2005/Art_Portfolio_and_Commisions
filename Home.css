@@ -23,6 +23,7 @@ a:focus-visible, .navbar-toggler:focus-visible {
     outline-offset: 3px;
 }
 
+/* Navigation */
 .site-nav {
     background: var(--paper);
     border-bottom: 1px solid var(--line);
@@ -58,6 +59,7 @@ a:focus-visible, .navbar-toggler:focus-visible {
     .site-nav .nav-link { margin-left: 0; display: inline-block; }
 }
 
+/* Page heading */
 .page-head {
     padding: 72px 12px 48px;
     max-width: 960px;
@@ -79,6 +81,7 @@ h1 {
     margin: 0;
 }
 
+/* Works */
 .work {
     display: block;
     color: inherit;
@@ -154,6 +157,7 @@ h1 {
     font-size: 1.05rem;
 }
 
+/* Footer */
 .site-footer {
     border-top: 1px solid var(--line);
     padding: 28px 0;
@@ -165,6 +169,7 @@ h1 {
     * { transition: none !important; }
 }
 
+/* Filters */
 .filters {
     display: flex;
     flex-wrap: wrap;
@@ -200,6 +205,7 @@ h1 {
 
 [data-type][hidden] { display: none; }
 
+/* Commissions */
 .commissions {
     margin-top: 96px;
     padding-top: 64px;
@@ -274,6 +280,7 @@ h1 {
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
+/* Language switcher */
 .lang {
     display: flex;
     margin-left: 28px;
@@ -297,4 +304,13 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 991px) {
     .lang { margin: 12px 0 0; align-self: flex-start; width: max-content; }
+}
+
+/* Logo */
+.site-nav .navbar-brand { padding: 0; }
+
+.brand-logo {
+    display: block;
+    height: 44px;
+    width: auto;
 }
