@@ -1,0 +1,131 @@
+/* Home page only. The shared look (colors, nav, footer, dark mode, .work cards)
+   comes from Shop.css, which home.html loads first. */
+
+.section { padding-top: 40px; padding-bottom: 40px; margin-top: 56px; }
+
+/* ---------- Hero ---------- */
+.hero { padding-top: 72px; padding-bottom: 24px; }
+
+.eyebrow {
+    display: inline-block;
+    margin: 0 0 20px;
+    padding: 4px 12px;
+    background: var(--mat-original);
+    color: #231942;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 2px;
+}
+
+.hero-title {
+    font-size: clamp(3.2rem, 8vw, 6.4rem);
+    line-height: 0.95;
+    margin: 0 0 24px;
+}
+.hero-title .hl {
+    font-style: italic;
+    color: var(--accent);
+}
+
+.hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 42ch; margin: 0 0 36px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.btn-home {
+    display: inline-block;
+    background: var(--btn1);
+    color: var(--btn1-text);
+    border: 2px solid var(--btn1);
+    border-radius: 2px;
+    padding: 12px 24px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+}
+.btn-home:hover { opacity: 0.88; color: var(--btn1-text); }
+.btn-home-alt { background: transparent; color: var(--text); border-color: var(--text); }
+.btn-home-alt:hover { background: var(--text); color: var(--bg); opacity: 1; }
+
+/* Arch-shaped frame with a circle behind it */
+.hero-art { position: relative; max-width: 420px; margin-left: auto; }
+.hero-art::before {
+    content: "";
+    position: absolute;
+    width: 62%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--mat-digital);
+    left: -14%;
+    bottom: -8%;
+}
+.hero-art img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 999px 999px 0 0;
+    background: var(--mat-original);
+    border: 3px solid var(--text);
+}
+@media (max-width: 991px) { .hero-art { margin: 24px auto 0; } }
+
+/* ---------- Section headings ---------- */
+.section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1;
+    margin: 0 0 32px;
+}
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.link-all { font-weight: 600; color: var(--accent); text-decoration: none; border-bottom: 2px solid currentColor; }
+
+/* ---------- Tiles ---------- */
+.tile {
+    display: block;
+    height: 100%;
+    padding: 32px 28px 36px;
+    color: #231942;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: transform 0.25s, border-color 0.2s;
+}
+.tile:hover { transform: translateY(-4px); border-color: #231942; color: #231942; }
+.tile h3 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 2rem; margin: 0 0 10px; }
+.tile p { margin: 0; line-height: 1.5; }
+.tile-original { background: var(--mat-original); }
+.tile-print    { background: var(--mat-print); }
+.tile-digital  { background: var(--mat-digital); }
+
+/* ---------- Commission band ---------- */
+.band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 48px;
+    background: var(--panel);
+    color: var(--panel-text);
+}
+.band h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.05; margin: 0 0 10px; }
+.band p { margin: 0; max-width: 46ch; }
+.band .btn-home { background: var(--panel-text); border-color: var(--panel-text); color: var(--panel); }
+@media (max-width: 575px) { .band { padding: 32px 22px; } }
+
+/* ---------- About ---------- */
+.about-photo { max-width: 280px; }
+.about-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    background: var(--mat-print);
+    border: 3px solid var(--text);
+}
+.about-text { font-size: 1.1rem; line-height: 1.65; max-width: 56ch; margin: 0; }
+
+.about-text + .btn-home { margin-top: 28px; }
