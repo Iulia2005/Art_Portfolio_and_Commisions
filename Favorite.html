@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Set the theme before the page paints, so it doesn't flash.
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem("theme");
+        } catch (e) {}
+        if (!t)
+          t = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <title>Favorite | Atelier</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Shared look (colors, nav, footer, dark mode, artwork cards) -->
+    <link rel="stylesheet" href="Shop.css" />
+    <!-- Styles for this page only -->
+    <link rel="stylesheet" href="Favorite.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg site-nav">
+      <div class="container">
+        <a class="navbar-brand" href="Home.html">
+          <img
+            class="brand-logo"
+            src="Images/Minimal_Drawing_Tablet_Emblem.png"
+            alt="LOGO"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-label="Meniu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="Home.html" data-en="Home">Acasă</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="categorii.html" data-en="Categories"
+                >Categorii</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Shop.html" data-en="Shop">Magazin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Shop.html#comenzi" data-en="Commissions"
+                >Comenzi</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotii.html" data-en="Sale"
+                >Promoții</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                href="Favorite.html"
+                aria-current="page"
+                data-en="Favorites"
+                >Favorite</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Cos.html" data-en="Cart">Coș</a>
+            </li>
+          </ul>
+          <div class="nav-tools">
+            <div class="lang" role="group" aria-label="Limbă / Language">
+              <button class="lang-btn" data-lang="ro" aria-pressed="true">
+                RO
+              </button>
+              <button class="lang-btn" data-lang="en" aria-pressed="false">
+                EN
+              </button>
+            </div>
+            <button class="theme-btn" id="themeBtn" type="button">
+              &#9790;
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header class="page-head">
+        <h1 data-en="Favorites">Favorite</h1>
+        <p
+          class="page-intro"
+          data-en="The artworks you saved, all in one place."
+        >
+          Lucrările salvate de tine, într-un singur loc.
+        </p>
+      </header>
+    </div>
+
+    <main class="container pb-5">
+      <!-- Shown when there are no saved favorites -->
+      <section class="empty-state" id="emptyState" aria-labelledby="emptyTitle">
+        <span class="empty-icon" aria-hidden="true">&#9825;</span>
+        <h2 class="empty-title" id="emptyTitle" tabindex="-1" data-en="No favorites yet">
+          Nu ai nicio lucrare favorită încă
+        </h2>
+        <p
+          class="empty-text"
+          data-en="Tap the heart on an artwork in the shop to save it here."
+        >
+          Apasă inima de la o lucrare din magazin ca s-o salvezi aici.
+        </p>
+        <a class="btn-fav" href="Shop.html" data-en="Continue shopping"
+          >Continuă cumpărăturile</a
+        >
+      </section>
+
+      <!-- Shown when there is at least one favorite -->
+      <section id="favCollection" hidden>
+        <div class="fav-toolbar">
+          <p class="fav-count" id="favCount"></p>
+          <a class="link-cart" href="Cos.html" data-en="View cart &rarr;"
+            >Vezi coșul &rarr;</a
+          >
+        </div>
+
+        <div class="row g-5" id="favGrid"></div>
+
+        <div class="fav-footer">
+          <a
+            class="btn-fav btn-fav-alt"
+            href="Shop.html"
+            data-en="Continue shopping"
+            >Continuă cumpărăturile</a
+          >
+        </div>
+      </section>
+
+      <!-- Screen-reader announcements (e.g. "Removed from favorites") -->
+      <div class="visually-hidden" id="liveMsg" role="status" aria-live="polite"></div>
+    </main>
+
+    <footer class="site-footer">
+      <div
+        class="container"
+        data-en="Atelier &middot; Original drawings, prints and digital illustrations"
+      >
+        Atelier &middot; Desene originale, printuri și ilustrații digitale
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      /* ==========================================================
+         FAVORITES PAGE
+
+         Data contract (localStorage), so the Shop page can later write here:
+
+           key "favorites" -> JSON array of artworks:
+           {
+             "id":      "fanart-carte",            // required, unique string
+             "title":   "FanArt Carte",            // required (Romanian)
+             "titleEn": "FanArt Book",             // optional (English)
+             "type":    "original",                // optional: original | print | digital
+             "price":   380,                       // required, number in RON (e.g. "380.00 RON" also accepted)
+             "image":   "Images/some-file.jpg",    // path relative to this page
+             "alt":     "Descriere imagine",       // optional
+             "altEn":   "Image description"        // optional
+           }
+
+         "Add to cart" writes the same object plus "qty" into key "cart",
+         which Cos.html reads.
+         ========================================================== */
+      const FAV_KEY = "favorites";
+      const CART_KEY = "cart";
+      const MAX_QTY = 99;
+      const FALLBACK_IMG = "Images/Minimal_Drawing_Tablet_Emblem.png";
+
+      const TYPE_LABELS = {
+        original: { ro: "Desen original", en: "Original drawing" },
+        print: { ro: "Print", en: "Print" },
+        digital: { ro: "Ilustrație digitală", en: "Digital illustration" },
+      };
+
+      const TEXT = {
+        ro: {
+          count: "Lucrări salvate",
+          remove: "Elimină din favorite",
+          add: "Adaugă în coș",
+          added: "Adăugat în coș \u2713",
+          removedMsg: "Lucrarea a fost eliminată din favorite.",
+          addedMsg: "Lucrarea a fost adăugată în coș.",
+          saveError: "Nu s-a putut salva. Verifică setările browserului.",
+        },
+        en: {
+          count: "Saved artworks",
+          remove: "Remove from favorites",
+          add: "Add to cart",
+          added: "Added to cart \u2713",
+          removedMsg: "Artwork removed from favorites.",
+          addedMsg: "Artwork added to cart.",
+          saveError: "Could not save. Please check your browser settings.",
+        },
+      };
+      const TITLES = { ro: "Favorite | Atelier", en: "Favorites | Atelier" };
+
+      let lang = "ro";
+      const flash = {}; // ids whose "Add to cart" button briefly shows "Added"
+
+      const grid = document.getElementById("favGrid");
+      const collection = document.getElementById("favCollection");
+      const emptyState = document.getElementById("emptyState");
+      const emptyTitle = document.getElementById("emptyTitle");
+      const countEl = document.getElementById("favCount");
+      const liveMsg = document.getElementById("liveMsg");
+
+      /* ---------- localStorage helpers ---------- */
+      function parsePrice(v) {
+        if (typeof v === "number") return isFinite(v) && v >= 0 ? v : NaN;
+        const n = parseFloat(String(v).replace(/[^\d.,-]/g, "").replace(",", "."));
+        return isFinite(n) && n >= 0 ? n : NaN;
+      }
+
+      // Returns a clean copy of an item, or null if it is not usable.
+      function normalize(item, withQty) {
+        if (!item || typeof item !== "object") return null;
+        const id = item.id === undefined || item.id === null ? "" : String(item.id);
+        const title = String(item.title || item.name || "");
+        const price = parsePrice(item.price);
+        if (!id || !title || isNaN(price)) return null;
+        const clean = Object.assign({}, item, { id: id, title: title, price: price });
+        if (withQty) {
+          const q = parseInt(item.qty, 10);
+          clean.qty = Math.max(1, Math.min(MAX_QTY, isNaN(q) ? 1 : q));
+        }
+        return clean;
+      }
+
+      function readList(key, withQty) {
+        try {
+          const raw = localStorage.getItem(key);
+          const data = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(data)) return [];
+          return data
+            .map((i) => normalize(i, withQty))
+            .filter(Boolean);
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function writeList(key, list) {
+        try {
+          localStorage.setItem(key, JSON.stringify(list));
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      /* ---------- small DOM helpers ---------- */
+      function el(tag, cls, text) {
+        const n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text !== undefined) n.textContent = text;
+        return n;
+      }
+
+      function money(n) {
+        return n.toFixed(2) + " RON";
+      }
+
+      function itemTitle(item) {
+        return lang === "en" && item.titleEn ? item.titleEn : item.title;
+      }
+
+      function itemAlt(item) {
+        if (lang === "en") return item.altEn || item.titleEn || item.title;
+        return item.alt || item.title;
+      }
+
+      function announce(msg) {
+        liveMsg.textContent = "";
+        setTimeout(() => {
+          liveMsg.textContent = msg;
+        }, 30);
+      }
+
+      /* ---------- Rendering ---------- */
+      function buildCard(item, t) {
+        const col = el("div", "col-sm-6 col-lg-4");
+        col.dataset.id = item.id;
+        if (TYPE_LABELS[item.type]) col.dataset.type = item.type;
+
+        const card = el("article", "fav-card");
+
+        const frame = el("figure", "work-frame");
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = itemAlt(item);
+        img.addEventListener("error", () => {
+          if (!img.dataset.fallback) {
+            img.dataset.fallback = "1";
+            img.src = FALLBACK_IMG;
+          }
+        });
+        img.src = String(item.image || FALLBACK_IMG).replace(/\\/g, "/");
+        frame.appendChild(img);
+
+        const heart = el("button", "fav-heart", "\u2665");
+        heart.type = "button";
+        heart.dataset.act = "remove";
+        const removeLabel = t.remove + ": " + itemTitle(item);
+        heart.setAttribute("aria-label", removeLabel);
+        heart.title = t.remove;
+        frame.appendChild(heart);
+        card.appendChild(frame);
+
+        const label = el("div", "work-label");
+        label.appendChild(el("h2", "work-title", itemTitle(item)));
+        label.appendChild(el("span", "work-price", money(item.price)));
+        card.appendChild(label);
+
+        if (TYPE_LABELS[item.type]) {
+          card.appendChild(el("span", "work-format", TYPE_LABELS[item.type][lang]));
+        }
+
+        const actions = el("div", "fav-actions");
+        const added = !!flash[item.id];
+        const addBtn = el("button", "btn-fav fav-add" + (added ? " is-added" : ""), added ? t.added : t.add);
+        addBtn.type = "button";
+        addBtn.dataset.act = "add";
+        actions.appendChild(addBtn);
+        card.appendChild(actions);
+
+        col.appendChild(card);
+        return col;
+      }
+
+      function render() {
+        const t = TEXT[lang];
+        const favs = readList(FAV_KEY, false);
+        const has = favs.length > 0;
+
+        emptyState.hidden = has;
+        collection.hidden = !has;
+        grid.replaceChildren();
+        if (!has) return;
+
+        countEl.textContent = t.count + ": " + favs.length;
+        favs.forEach((item) => grid.appendChild(buildCard(item, t)));
+      }
+
+      function focusControl(id, act) {
+        const col = Array.from(grid.children).find((c) => c.dataset.id === id);
+        const btn = col && col.querySelector('button[data-act="' + act + '"]');
+        if (btn) btn.focus();
+      }
+
+      /* ---------- Actions ---------- */
+      grid.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-act]");
+        if (!btn) return;
+        const col = btn.closest("[data-id]");
+        if (!col) return;
+        const id = col.dataset.id;
+        const t = TEXT[lang];
+
+        if (btn.dataset.act === "remove") {
+          const favs = readList(FAV_KEY, false).filter((i) => i.id !== id);
+          if (!writeList(FAV_KEY, favs)) return announce(t.saveError);
+          render();
+          announce(t.removedMsg);
+          if (favs.length === 0) emptyTitle.focus();
+          return;
+        }
+
+        if (btn.dataset.act === "add") {
+          const fav = readList(FAV_KEY, false).find((i) => i.id === id);
+          if (!fav) return render();
+          const cart = readList(CART_KEY, true);
+          const found = cart.find((i) => i.id === id);
+          if (found) found.qty = Math.min(MAX_QTY, found.qty + 1);
+          else cart.push(Object.assign({}, fav, { qty: 1 }));
+          if (!writeList(CART_KEY, cart)) return announce(t.saveError);
+
+          flash[id] = true;
+          render();
+          focusControl(id, "add");
+          announce(t.addedMsg);
+          setTimeout(() => {
+            delete flash[id];
+            render();
+          }, 1600);
+        }
+      });
+
+      // Keep this page in sync if favorites change in another tab.
+      window.addEventListener("storage", (e) => {
+        if (e.key === FAV_KEY || e.key === null) render();
+      });
+
+      /* ==========================================================
+         LANGUAGE + THEME (same behavior as Shop.html)
+         ========================================================== */
+      // Remember the original Romanian text so we can switch back.
+      document.querySelectorAll("[data-en]").forEach((el) => {
+        el.dataset.ro = el.innerHTML;
+      });
+
+      function setLang(l) {
+        lang = l;
+        document.documentElement.lang = l;
+        document.title = TITLES[l];
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          el.innerHTML = l === "en" ? el.dataset.en : el.dataset.ro;
+        });
+        document.querySelectorAll(".lang-btn").forEach((b) => {
+          const on = b.dataset.lang === l;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-pressed", on);
+        });
+        try {
+          localStorage.setItem("lang", l);
+        } catch (e) {}
+        updateThemeBtn();
+        render();
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((b) => {
+        b.addEventListener("click", () => setLang(b.dataset.lang));
+      });
+
+      // Light / dark mode
+      const THEME_LABELS = {
+        ro: {
+          toDark: "Treci la modul întunecat",
+          toLight: "Treci la modul luminos",
+        },
+        en: { toDark: "Switch to dark mode", toLight: "Switch to light mode" },
+      };
+      function updateThemeBtn() {
+        const btn = document.getElementById("themeBtn");
+        const dark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        const l = document.documentElement.lang === "en" ? "en" : "ro";
+        btn.innerHTML = dark ? "&#9728;" : "&#9790;";
+        const label = dark ? THEME_LABELS[l].toLight : THEME_LABELS[l].toDark;
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+      }
+      document.getElementById("themeBtn").addEventListener("click", () => {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light"
+            : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {}
+        updateThemeBtn();
+      });
+
+      let saved = "ro";
+      try {
+        saved = localStorage.getItem("lang") || "ro";
+      } catch (e) {}
+      setLang(saved === "en" ? "en" : "ro");
+    </script>
+  </body>
+</html>

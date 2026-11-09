@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Set the theme before the page paints, so it doesn't flash.
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem("theme");
+        } catch (e) {}
+        if (!t)
+          t = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <title>Coș | Atelier</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Shared look (colors, nav, footer, dark mode, artwork mats) -->
+    <link rel="stylesheet" href="Shop.css" />
+    <!-- Styles for this page only -->
+    <link rel="stylesheet" href="Cos.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg site-nav">
+      <div class="container">
+        <a class="navbar-brand" href="Home.html">
+          <img
+            class="brand-logo"
+            src="Images/Minimal_Drawing_Tablet_Emblem.png"
+            alt="LOGO"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-label="Meniu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="Home.html" data-en="Home">Acasă</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="categorii.html" data-en="Categories"
+                >Categorii</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Shop.html" data-en="Shop">Magazin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Shop.html#comenzi" data-en="Commissions"
+                >Comenzi</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotii.html" data-en="Sale"
+                >Promoții</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Favorite.html" data-en="Favorites"
+                >Favorite</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                href="Cos.html"
+                aria-current="page"
+                data-en="Cart"
+                >Coș</a
+              >
+            </li>
+          </ul>
+          <div class="nav-tools">
+            <div class="lang" role="group" aria-label="Limbă / Language">
+              <button class="lang-btn" data-lang="ro" aria-pressed="true">
+                RO
+              </button>
+              <button class="lang-btn" data-lang="en" aria-pressed="false">
+                EN
+              </button>
+            </div>
+            <button class="theme-btn" id="themeBtn" type="button">
+              &#9790;
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header class="page-head">
+        <h1 data-en="Shopping Cart">Coș de cumpărături</h1>
+        <p
+          class="page-intro"
+          data-en="Review your chosen artworks before you check out."
+        >
+          Verifică lucrările alese înainte de a finaliza comanda.
+        </p>
+      </header>
+    </div>
+
+    <main class="container pb-5">
+      <!-- Shown when the cart is empty -->
+      <section class="empty-state" id="emptyState" aria-labelledby="emptyTitle">
+        <span class="empty-icon" aria-hidden="true">&#8709;</span>
+        <h2 class="empty-title" id="emptyTitle" tabindex="-1" data-en="Your cart is empty">
+          Coșul tău este gol
+        </h2>
+        <p
+          class="empty-text"
+          data-en="Add artworks from the shop or from your favorites."
+        >
+          Adaugă lucrări din magazin sau din lista de favorite.
+        </p>
+        <div class="empty-actions">
+          <a class="btn-cart" href="Shop.html" data-en="Continue shopping"
+            >Continuă cumpărăturile</a
+          >
+          <a
+            class="btn-cart btn-cart-alt"
+            href="Favorite.html"
+            data-en="View favorites"
+            >Vezi favoritele</a
+          >
+        </div>
+      </section>
+
+      <!-- Shown when the cart has items: two columns on desktop, stacked on mobile -->
+      <div class="row g-5 cart-layout" id="cartLayout" hidden>
+        <div class="col-lg-8">
+          <div class="cart-list" id="cartList"></div>
+          <div class="cart-continue">
+            <a
+              class="btn-cart btn-cart-alt"
+              href="Shop.html"
+              data-en="Continue shopping"
+              >Continuă cumpărăturile</a
+            >
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <aside class="summary" aria-labelledby="summaryTitle">
+            <h2 class="summary-title" id="summaryTitle" data-en="Order summary">
+              Sumar comandă
+            </h2>
+            <dl class="summary-rows">
+              <dt data-en="Items">Articole</dt>
+              <dd id="sumCount">0</dd>
+              <dt data-en="Subtotal">Subtotal</dt>
+              <dd id="sumSubtotal">0.00 RON</dd>
+              <dt class="summary-total-label" data-en="Total">Total</dt>
+              <dd class="summary-total" id="sumTotal">0.00 RON</dd>
+            </dl>
+            <button
+              class="btn-cart btn-checkout"
+              id="checkoutBtn"
+              type="button"
+              data-en="Checkout"
+            >
+              Finalizează comanda
+            </button>
+            <p
+              class="checkout-msg"
+              id="checkoutMsg"
+              role="status"
+              hidden
+              data-en="This is a demo checkout. No payment is processed."
+            >
+              Aceasta este o comandă demonstrativă. Nu se efectuează nicio plată.
+            </p>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Screen-reader announcements (e.g. "Item removed") -->
+      <div class="visually-hidden" id="liveMsg" role="status" aria-live="polite"></div>
+    </main>
+
+    <footer class="site-footer">
+      <div
+        class="container"
+        data-en="Atelier &middot; Original drawings, prints and digital illustrations"
+      >
+        Atelier &middot; Desene originale, printuri și ilustrații digitale
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      /* ==========================================================
+         SHOPPING CART PAGE
+
+         Data contract (localStorage), so the Shop page can later write here:
+
+           key "cart" -> JSON array of artworks:
+           {
+             "id":      "fanart-carte",            // required, unique string
+             "title":   "FanArt Carte",            // required (Romanian)
+             "titleEn": "FanArt Book",             // optional (English)
+             "type":    "original",                // optional: original | print | digital
+             "price":   380,                       // required, number in RON (e.g. "380.00 RON" also accepted)
+             "image":   "Images/some-file.jpg",    // path relative to this page
+             "alt":     "Descriere imagine",       // optional
+             "altEn":   "Image description",       // optional
+             "qty":     1                          // optional, defaults to 1 (max 99)
+           }
+         ========================================================== */
+      const CART_KEY = "cart";
+      const MAX_QTY = 99;
+      const FALLBACK_IMG = "Images/Minimal_Drawing_Tablet_Emblem.png";
+
+      const TYPE_LABELS = {
+        original: { ro: "Desen original", en: "Original drawing" },
+        print: { ro: "Print", en: "Print" },
+        digital: { ro: "Ilustrație digitală", en: "Digital illustration" },
+      };
+
+      const TEXT = {
+        ro: {
+          unit: "Preț unitar",
+          qty: "Cantitate",
+          dec: "Scade cantitatea",
+          inc: "Crește cantitatea",
+          remove: "Elimină",
+          removeAria: "Elimină din coș",
+          removedMsg: "Lucrarea a fost eliminată din coș.",
+        },
+        en: {
+          unit: "Unit price",
+          qty: "Quantity",
+          dec: "Decrease quantity",
+          inc: "Increase quantity",
+          remove: "Remove",
+          removeAria: "Remove from cart",
+          removedMsg: "Item removed from cart.",
+        },
+      };
+      const TITLES = { ro: "Coș | Atelier", en: "Cart | Atelier" };
+
+      let lang = "ro";
+
+      const list = document.getElementById("cartList");
+      const layout = document.getElementById("cartLayout");
+      const emptyState = document.getElementById("emptyState");
+      const emptyTitle = document.getElementById("emptyTitle");
+      const sumCount = document.getElementById("sumCount");
+      const sumSubtotal = document.getElementById("sumSubtotal");
+      const sumTotal = document.getElementById("sumTotal");
+      const checkoutBtn = document.getElementById("checkoutBtn");
+      const checkoutMsg = document.getElementById("checkoutMsg");
+      const liveMsg = document.getElementById("liveMsg");
+
+      /* ---------- localStorage helpers ---------- */
+      function parsePrice(v) {
+        if (typeof v === "number") return isFinite(v) && v >= 0 ? v : NaN;
+        const n = parseFloat(String(v).replace(/[^\d.,-]/g, "").replace(",", "."));
+        return isFinite(n) && n >= 0 ? n : NaN;
+      }
+
+      // Returns a clean copy of an item, or null if it is not usable.
+      function normalize(item) {
+        if (!item || typeof item !== "object") return null;
+        const id = item.id === undefined || item.id === null ? "" : String(item.id);
+        const title = String(item.title || item.name || "");
+        const price = parsePrice(item.price);
+        if (!id || !title || isNaN(price)) return null;
+        const q = parseInt(item.qty, 10);
+        return Object.assign({}, item, {
+          id: id,
+          title: title,
+          price: price,
+          qty: Math.max(1, Math.min(MAX_QTY, isNaN(q) ? 1 : q)),
+        });
+      }
+
+      function readCart() {
+        try {
+          const raw = localStorage.getItem(CART_KEY);
+          const data = raw ? JSON.parse(raw) : [];
+          if (!Array.isArray(data)) return [];
+          return data.map(normalize).filter(Boolean);
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function writeCart(items) {
+        try {
+          localStorage.setItem(CART_KEY, JSON.stringify(items));
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      /* ---------- small DOM helpers ---------- */
+      function el(tag, cls, text) {
+        const n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text !== undefined) n.textContent = text;
+        return n;
+      }
+
+      function money(n) {
+        return n.toFixed(2) + " RON";
+      }
+
+      // Work in whole bani (cents) to avoid floating point surprises.
+      function cents(price) {
+        return Math.round(price * 100);
+      }
+
+      function itemTitle(item) {
+        return lang === "en" && item.titleEn ? item.titleEn : item.title;
+      }
+
+      function itemAlt(item) {
+        if (lang === "en") return item.altEn || item.titleEn || item.title;
+        return item.alt || item.title;
+      }
+
+      function announce(msg) {
+        liveMsg.textContent = "";
+        setTimeout(() => {
+          liveMsg.textContent = msg;
+        }, 30);
+      }
+
+      function iconButton(act, symbol, label, disabled) {
+        const b = el("button", "qty-btn", symbol);
+        b.type = "button";
+        b.dataset.act = act;
+        b.setAttribute("aria-label", label);
+        b.title = label;
+        b.disabled = disabled;
+        return b;
+      }
+
+      /* ---------- Rendering ---------- */
+      function buildItem(item, t) {
+        const row = el("article", "cart-item");
+        row.dataset.id = item.id;
+        if (TYPE_LABELS[item.type]) row.dataset.type = item.type;
+
+        const thumb = el("figure", "work-frame cart-thumb");
+        const img = document.createElement("img");
+        img.alt = itemAlt(item);
+        img.addEventListener("error", () => {
+          if (!img.dataset.fallback) {
+            img.dataset.fallback = "1";
+            img.src = FALLBACK_IMG;
+          }
+        });
+        img.src = String(item.image || FALLBACK_IMG).replace(/\\/g, "/");
+        thumb.appendChild(img);
+        row.appendChild(thumb);
+
+        const info = el("div", "cart-info");
+        info.appendChild(el("h2", "cart-title", itemTitle(item)));
+        if (TYPE_LABELS[item.type]) {
+          info.appendChild(el("span", "work-format", TYPE_LABELS[item.type][lang]));
+        }
+        info.appendChild(el("p", "cart-unit", t.unit + ": " + money(item.price)));
+        row.appendChild(info);
+
+        const controls = el("div", "cart-controls");
+
+        const qty = el("div", "cart-qty");
+        qty.setAttribute("role", "group");
+        qty.setAttribute("aria-label", t.qty + ": " + itemTitle(item));
+        qty.appendChild(iconButton("dec", "\u2212", t.dec, item.qty <= 1));
+        qty.appendChild(el("span", "qty-value", String(item.qty)));
+        qty.appendChild(iconButton("inc", "+", t.inc, item.qty >= MAX_QTY));
+        controls.appendChild(qty);
+
+        const lineTotal = (cents(item.price) * item.qty) / 100;
+        controls.appendChild(el("span", "cart-line", money(lineTotal)));
+
+        const rm = el("button", "cart-remove", t.remove);
+        rm.type = "button";
+        rm.dataset.act = "remove";
+        rm.setAttribute("aria-label", t.removeAria + ": " + itemTitle(item));
+        controls.appendChild(rm);
+
+        row.appendChild(controls);
+        return row;
+      }
+
+      function render() {
+        const t = TEXT[lang];
+        const cart = readCart();
+        const has = cart.length > 0;
+
+        emptyState.hidden = has;
+        layout.hidden = !has;
+        checkoutMsg.hidden = true;
+        list.replaceChildren();
+        if (!has) return;
+
+        let count = 0;
+        let subtotal = 0; // in cents
+        cart.forEach((item) => {
+          count += item.qty;
+          subtotal += cents(item.price) * item.qty;
+          list.appendChild(buildItem(item, t));
+        });
+
+        sumCount.textContent = count;
+        sumSubtotal.textContent = money(subtotal / 100);
+        sumTotal.textContent = money(subtotal / 100);
+      }
+
+      function focusControl(id, act) {
+        const row = Array.from(list.children).find((r) => r.dataset.id === id);
+        const btn = row && row.querySelector('button[data-act="' + act + '"]');
+        if (btn && !btn.disabled) btn.focus();
+        else if (row) {
+          // The button became disabled (min/max reached): focus its sibling.
+          const other = row.querySelector(
+            'button[data-act="' + (act === "dec" ? "inc" : "dec") + '"]'
+          );
+          if (other && !other.disabled) other.focus();
+        }
+      }
+
+      /* ---------- Actions ---------- */
+      list.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-act]");
+        if (!btn || btn.disabled) return;
+        const row = btn.closest("[data-id]");
+        if (!row) return;
+        const id = row.dataset.id;
+        const act = btn.dataset.act;
+
+        const cart = readCart();
+        const idx = cart.findIndex((i) => i.id === id);
+        if (idx < 0) return render();
+
+        if (act === "inc") cart[idx].qty = Math.min(MAX_QTY, cart[idx].qty + 1);
+        else if (act === "dec") cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+        else if (act === "remove") cart.splice(idx, 1);
+
+        writeCart(cart);
+        render();
+
+        if (act === "remove") {
+          announce(TEXT[lang].removedMsg);
+          if (cart.length === 0) emptyTitle.focus();
+        } else {
+          focusControl(id, act);
+        }
+      });
+
+      // Checkout is visual only: no payment, the cart is left untouched.
+      checkoutBtn.addEventListener("click", () => {
+        checkoutMsg.hidden = false;
+      });
+
+      // Keep this page in sync if the cart changes in another tab.
+      window.addEventListener("storage", (e) => {
+        if (e.key === CART_KEY || e.key === null) render();
+      });
+
+      /* ==========================================================
+         LANGUAGE + THEME (same behavior as Shop.html)
+         ========================================================== */
+      // Remember the original Romanian text so we can switch back.
+      document.querySelectorAll("[data-en]").forEach((el) => {
+        el.dataset.ro = el.innerHTML;
+      });
+
+      function setLang(l) {
+        lang = l;
+        document.documentElement.lang = l;
+        document.title = TITLES[l];
+        document.querySelectorAll("[data-en]").forEach((el) => {
+          el.innerHTML = l === "en" ? el.dataset.en : el.dataset.ro;
+        });
+        document.querySelectorAll(".lang-btn").forEach((b) => {
+          const on = b.dataset.lang === l;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-pressed", on);
+        });
+        try {
+          localStorage.setItem("lang", l);
+        } catch (e) {}
+        updateThemeBtn();
+        // Re-render dynamic content, but keep the checkout note if it is showing.
+        const noteVisible = !checkoutMsg.hidden;
+        render();
+        checkoutMsg.hidden = !noteVisible || layout.hidden;
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((b) => {
+        b.addEventListener("click", () => setLang(b.dataset.lang));
+      });
+
+      // Light / dark mode
+      const THEME_LABELS = {
+        ro: {
+          toDark: "Treci la modul întunecat",
+          toLight: "Treci la modul luminos",
+        },
+        en: { toDark: "Switch to dark mode", toLight: "Switch to light mode" },
+      };
+      function updateThemeBtn() {
+        const btn = document.getElementById("themeBtn");
+        const dark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        const l = document.documentElement.lang === "en" ? "en" : "ro";
+        btn.innerHTML = dark ? "&#9728;" : "&#9790;";
+        const label = dark ? THEME_LABELS[l].toLight : THEME_LABELS[l].toDark;
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+      }
+      document.getElementById("themeBtn").addEventListener("click", () => {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light"
+            : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {}
+        updateThemeBtn();
+      });
+
+      let saved = "ro";
+      try {
+        saved = localStorage.getItem("lang") || "ro";
+      } catch (e) {}
+      setLang(saved === "en" ? "en" : "ro");
+    </script>
+  </body>
+</html>
